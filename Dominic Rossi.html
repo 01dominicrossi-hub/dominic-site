@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dominic Rossi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#08090b;--bg-2:#0a0b0d;--ink:#e9ecef;--ink-dim:#9ba0a6;--muted:#6b7178;
+    --silver:#c8ccd1;--silver-hi:#f1f3f5;--silver-lo:#7a8087;--line:rgba(255,255,255,.08);
+  }
+  *{box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Inter Tight",sans-serif;overflow-x:hidden}
+  ::selection{background:#f1f3f5;color:#08090b}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .serif{font-family:"Fraunces",serif;font-optical-sizing:auto;letter-spacing:-.02em}
+  .italic{font-style:italic}
+  .eyebrow{font-size:.82rem;letter-spacing:.28em;text-transform:uppercase;color:var(--silver);font-weight:500}
+  .eyebrow.dim{color:var(--ink-dim)}
+  .silver-text{background:linear-gradient(180deg,#f8f9fa 0%,#d5d8dc 35%,#9ca1a7 60%,#e4e6e9 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+  .silver-dim{background:linear-gradient(180deg,#c2c6cc 0%,#8a8f95 55%,#b6babf 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hair{border-color:rgba(255,255,255,.08)}
+
+  /* Grain */
+  .grain{pointer-events:none;position:fixed;inset:0;z-index:100;opacity:.08;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* Hero */
+  .hero{position:relative;height:100svh;width:100%;overflow:hidden}
+  .hero-bg{position:absolute;inset:0}
+  .hero-img{position:absolute;inset:0;background-position:center;background-size:cover;animation:breathe 14s ease-in-out infinite}
+  @keyframes breathe{0%,100%{transform:scale(1.08) translateY(0);filter:brightness(.55) contrast(1.15)}50%{transform:scale(1.15) translateY(-1.2%);filter:brightness(.62) contrast(1.2)}}
+  .vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,transparent 0%,rgba(0,0,0,.35) 55%,rgba(0,0,0,.85) 100%),linear-gradient(180deg,rgba(8,9,11,.2) 0%,rgba(8,9,11,.85) 85%,var(--bg) 100%)}
+  .scan{position:absolute;top:0;bottom:0;width:28%;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.04) 30%,rgba(255,255,255,.22) 50%,rgba(255,255,255,.04) 70%,transparent 100%);filter:blur(10px);animation:scan 7s ease-in-out infinite;animation-delay:2s;mix-blend-mode:screen;pointer-events:none}
+  @keyframes scan{0%{transform:translateX(-110%) skewX(-12deg);opacity:0}20%{opacity:.9}100%{transform:translateX(230%) skewX(-12deg);opacity:0}}
+
+  header.nav{position:absolute;top:0;left:0;right:0;z-index:20;padding:1.5rem 3rem;display:flex;align-items:center;justify-content:space-between}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--silver);box-shadow:0 0 12px rgba(200,204,209,.8)}
+  .brand{display:flex;align-items:center;gap:.75rem}
+  nav.top{display:none;gap:2.5rem}
+  nav.top a:hover{color:#fff}
+  @media(min-width:768px){nav.top{display:flex}}
+
+  .hero-content{position:relative;z-index:10;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3rem 6rem}
+  .h1{font-family:"Fraunces",serif;font-weight:300;line-height:.95;font-size:clamp(2.8rem,8vw,7.5rem);letter-spacing:-.02em;max-width:72rem}
+  .h1 span{display:block}
+  .hero-sub{margin-top:2.5rem;max-width:36rem;color:var(--silver);font-size:clamp(1.1rem,1.6vw,1.5rem);font-weight:300;line-height:1.3}
+  .cta-row{margin-top:2.5rem;display:flex;flex-wrap:wrap;gap:1rem}
+  .scroll-ind{position:absolute;bottom:2rem;right:3rem;display:flex;align-items:center;gap:.75rem;color:rgba(200,204,209,.7)}
+  .scroll-ind .line{width:4rem;height:1px;background:rgba(200,204,209,.3)}
+
+  /* Buttons */
+  .btn{display:inline-flex;align-items:center;gap:.75rem;padding:1.25rem 2rem;border-radius:999px;font-weight:500;letter-spacing:.02em;font-size:1rem;cursor:pointer;transition:all .3s}
+  .btn.lg{padding:1.5rem 2.5rem;font-size:1.125rem}
+  .btn-silver{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(180deg,#ebeef1 0%,#c6cacf 55%,#e9ecef 100%);color:#0a0b0d}
+  .btn-silver::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 0%,transparent 35%,rgba(255,255,255,.95) 50%,transparent 65%,transparent 100%);transform:translateX(-120%);transition:transform .9s cubic-bezier(.23,1,.32,1);z-index:1}
+  .btn-silver:hover::before{transform:translateX(120%)}
+  .btn-silver>*{position:relative;z-index:2}
+  .btn-ghost{border:1px solid rgba(200,204,209,.25);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--silver);background:rgba(255,255,255,.04)}
+  .arrow{display:inline-block;transition:transform .3s}
+  .btn:hover .arrow{transform:translateX(4px)}
+
+  /* Sections */
+  section{position:relative}
+  .container{max-width:1200px;margin:0 auto;padding:0 3rem}
+  .wide{max-width:1400px;margin:0 auto;padding:0 3rem}
+  .silver-line{height:1px;background:linear-gradient(90deg,transparent,rgba(200,204,209,.45) 50%,transparent);position:absolute;top:0;left:10%;right:10%}
+  .border-t{border-top:1px solid var(--line)}
+
+  /* Mini CTA */
+  .mini{padding:5rem 3rem;border-top:1px solid var(--line);text-align:center}
+  .mini p{color:var(--silver);font-size:clamp(1.25rem,2vw,1.875rem);font-weight:300;line-height:1.5;max-width:56rem;margin:0 auto 2.5rem}
+
+  /* Percorso */
+  .sec{padding:8rem 3rem;overflow:hidden}
+  .bg-2{background:var(--bg-2)}
+  .grid-2{display:grid;gap:4rem}
+  @media(min-width:768px){.grid-2{grid-template-columns:.9fr 1.1fr;gap:5rem}}
+  .big-num{font-family:"Fraunces",serif;font-style:italic;font-weight:300;font-size:clamp(4rem,10vw,8rem);line-height:1;opacity:.6;margin-bottom:.5rem}
+  .img-frame{position:relative;aspect-ratio:4/5;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+  .img-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.6s cubic-bezier(.22,1,.36,1)}
+  .img-frame:hover img{transform:scale(1.05)}
+  .img-grad{position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,rgba(8,9,11,.15) 50%,transparent 100%)}
+  .h2{font-family:"Fraunces",serif;font-weight:300;line-height:1.02;font-size:clamp(2.4rem,6vw,5.2rem);letter-spacing:-.02em}
+  .h2 span{display:block}
+  .body-text{color:var(--silver);font-size:clamp(1.05rem,1.3vw,1.25rem);line-height:1.7;font-weight:300;max-width:40rem}
+  .body-text p{margin:0 0 1.5rem}
+  .body-text p:last-child{color:var(--ink)}
+  .cta-block{margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--line)}
+  .quote-q{font-family:"Fraunces",serif;font-style:italic;font-size:clamp(1.5rem,2.5vw,1.875rem);margin-bottom:1.25rem;font-weight:300}
+
+  /* Team */
+  .team-grid{display:grid;gap:3rem;align-items:center}
+  @media(min-width:768px){.team-grid{grid-template-columns:1fr 1fr;gap:4rem}}
+  .team-frame{position:relative;aspect-ratio:4/3;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+  .team-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.8s ease-out}
+  .team-frame:hover img{transform:scale(1.04)}
+  .team-label{position:absolute;top:1.25rem;left:1.25rem;color:var(--silver)}
+
+  /* Cosa faccio */
+  .cosa-bg{position:absolute;inset:0}
+  .cosa-img{position:absolute;inset:0;background-position:center;background-size:cover;filter:grayscale(.85) contrast(1.1) brightness(.35)}
+  .cosa-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg) 0%,rgba(8,9,11,.7) 50%,var(--bg) 100%)}
+  .dots{position:absolute;inset:0;background-image:radial-gradient(rgba(200,204,209,.05) 1px,transparent 1px);background-size:28px 28px;opacity:.4}
+  .skills{display:grid;gap:1.5rem;grid-template-columns:1fr;margin-top:1rem}
+  @media(min-width:640px){.skills{grid-template-columns:1fr 1fr}}
+  @media(min-width:1024px){.skills{grid-template-columns:1fr 1fr 1fr}}
+  .skill{padding:1.75rem;border:1px solid rgba(255,255,255,.07);background:linear-gradient(180deg,rgba(255,255,255,.025) 0%,rgba(255,255,255,.01) 100%);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:all .5s;display:flex;align-items:baseline;gap:1rem}
+  .skill:hover{border-color:rgba(200,204,209,.25)}
+  .skill-num{font-family:"Fraunces",serif;font-style:italic;font-size:clamp(1.5rem,2vw,1.875rem);font-weight:300;font-variant-numeric:tabular-nums}
+  .skill-t{font-size:clamp(1.25rem,1.6vw,1.5rem);font-weight:300;color:var(--ink)}
+  .cosa-foot{margin-top:4rem;padding-top:2.5rem;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:1rem;justify-content:space-between}
+  @media(min-width:768px){.cosa-foot{flex-direction:row;align-items:flex-end}}
+
+  /* Testimonianze */
+  .testi-grid{display:grid;gap:1.5rem;grid-template-columns:1fr;margin-top:4rem}
+  @media(min-width:768px){.testi-grid{grid-template-columns:1fr 1fr}}
+  @media(min-width:1024px){.testi-grid{grid-template-columns:1fr 1fr 1fr}}
+  .testi{padding:2rem;border:1px solid rgba(255,255,255,.07);background:linear-gradient(180deg,rgba(255,255,255,.025) 0%,rgba(255,255,255,.01) 100%);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:border-color .5s}
+  .testi:hover{border-color:rgba(200,204,209,.2)}
+  .testi .q{font-family:"Fraunces",serif;font-size:3.5rem;line-height:1;margin-bottom:1rem;opacity:.6}
+  .testi .t{color:var(--ink);font-size:1.125rem;line-height:1.7;font-weight:300;margin-bottom:1.75rem}
+  .testi .a{display:flex;align-items:center;gap:.5rem;color:var(--silver)}
+  .testi .a .bar{width:1.5rem;height:1px;background:rgba(200,204,209,.5)}
+
+  /* YT */
+  .yt-grid{display:grid;gap:4rem;align-items:center}
+  @media(min-width:768px){.yt-grid{grid-template-columns:1fr 1fr}}
+  .yt-box{position:relative;aspect-ratio:1/1;max-width:28rem;margin:0 auto;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.08);overflow:hidden;background:linear-gradient(135deg,#0c0d10,#08090b)}
+  .yt-box .scan{width:28%}
+  .yt-box svg{position:relative;width:8rem;height:8rem;transition:transform .7s}
+  .yt-box:hover svg{transform:scale(1.1)}
+  .yt-box .handle{position:absolute;bottom:1.5rem;color:var(--silver)}
+
+  /* Final */
+  .final{padding-top:7rem;text-align:center}
+  .final h2{margin-bottom:2.5rem}
+  .final p{color:var(--silver);font-size:clamp(1.25rem,1.8vw,1.5rem);max-width:32rem;margin:0 auto 3.5rem;font-weight:300;line-height:1.6}
+
+  /* Marquee */
+  .marquee{margin-top:7rem;overflow:hidden;user-select:none}
+  .marquee-track{display:flex;white-space:nowrap;animation:marquee 38s linear infinite;will-change:transform}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .marquee span{font-family:"Fraunces",serif;font-style:italic;font-size:clamp(5rem,18vw,18rem);line-height:1;padding:0 1.5rem;font-weight:300;-webkit-text-stroke:1px rgba(200,204,209,.08)}
+
+  /* Footer */
+  footer{padding:1.5rem 3rem 2rem;display:flex;flex-direction:column;gap:1rem;align-items:center;justify-content:space-between;border-top:1px solid var(--line);color:var(--ink-dim)}
+  @media(min-width:768px){footer{flex-direction:row}}
+  footer .links{display:flex;gap:2rem}
+  footer a:hover{color:#fff}
+
+  /* Intro overlay */
+  .intro{position:fixed;inset:0;z-index:200;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .9s cubic-bezier(.22,1,.36,1)}
+  .intro.hide{opacity:0;pointer-events:none}
+  .intro-inner{text-align:center}
+  .intro-line{margin:1.5rem auto 0;height:1px;width:0;background:linear-gradient(90deg,transparent,rgba(200,204,209,.6),transparent);transition:width .9s cubic-bezier(.22,1,.36,1)}
+  .intro-line.grow{width:220px}
+
+  /* Reveal */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+  .reveal.in{opacity:1;transform:translateY(0)}
+
+  /* Hero fade-in */
+  .fade{opacity:0;transform:translateY(12px);transition:opacity 1.2s cubic-bezier(.22,1,.36,1),transform 1.2s cubic-bezier(.22,1,.36,1)}
+  .fade.on{opacity:1;transform:translateY(0)}
+
+  /* Small responsive padding */
+  @media(max-width:640px){
+    header.nav{padding:1.5rem}
+    .hero-content{padding:0 1.5rem 6rem}
+    .sec,.mini{padding-left:1.5rem;padding-right:1.5rem}
+    .container,.wide{padding:0 1.5rem}
+    footer{padding:1.5rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- Intro -->
+<div class="intro" id="intro">
+  <div class="intro-inner">
+    <div class="eyebrow" style="color:var(--silver)">DOMINIC ROSSI</div>
+    <div class="intro-line" id="introLine"></div>
+  </div>
+</div>
+
+<div class="grain"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-img" style="background-image:url('https://customer-assets.emergentagent.com/job_essence-reveal/artifacts/det557qb_60CCB5AC-E7A2-43A7-9095-12646C484C0F.jpg')"></div>
+    <div class="vignette"></div>
+    <div class="scan"></div>
+  </div>
+  <header class="nav fade" data-delay="300">
+    <div class="brand">
+      <span class="dot"></span>
+      <span class="eyebrow">DOMINIC ROSSI</span>
+    </div>
+    <nav class="top eyebrow">
+      <a href="#percorso">Percorso</a>
+      <a href="#cosa">Cosa faccio</a>
+      <a href="#progetto">Progetto</a>
+      <a href="#testi">Testimonianze</a>
+      <a href="#contatti">Contatti</a>
+    </nav>
+  </header>
+  <div class="hero-content">
+    <h1 class="h1 fade" data-delay="1000">
+      <span class="silver-text">Se non stai</span>
+      <span class="silver-text">costruendo niente,</span>
+      <span class="italic silver-dim">prima o poi lo senti.</span>
+    </h1>
+    <p class="hero-sub fade" data-delay="2000">
+      Non è mancanza di impegno.<br>
+      <span class="italic silver-dim">È mancanza di direzione.</span>
+    </p>
+    <div class="cta-row fade" data-delay="2300">
+      <a class="btn btn-silver" href="https://docs.google.com/forms/d/e/1FAIpQLSeMZeA9GvGD3Y9q87oKyyHNWH76gWYmqmCgBXAU4pKKVilt-g/viewform" target="_blank" rel="noopener">
+        <span>Richiedi informazioni</span><span class="arrow">↗</span>
+      </a>
+      <a class="btn btn-ghost" href="#percorso"><span>Leggi il percorso</span></a>
+    </div>
+    <div class="scroll-ind eyebrow fade" data-delay="2600"><span class="line"></span>Scroll</div>
+  </div>
+</section>
+
+<!-- Mini CTA -->
+<section class="mini">
+  <div class="reveal">
+    <p>Se senti che puoi fare di più ma non hai ancora una direzione chiara,
+      puoi <span class="italic silver-text">richiedere informazioni</span> e capire concretamente come funziona.</p>
+    <a class="btn btn-silver" href="https://docs.google.com/forms/d/e/1FAIpQLSeMZeA9GvGD3Y9q87oKyyHNWH76gWYmqmCgBXAU4pKKVilt-g/viewform" target="_blank" rel="noopener"><span>Richiedi informazioni</span><span class="arrow">↗</span></a>
+  </div>
+</section>
+
+<!-- 01 IL PERCORSO -->
+<section id="percorso" class="sec bg-2">
+  <div class="silver-line"></div>
+  <div class="wide">
+    <div class="grid-2">
+      <div class="reveal">
+        <div class="big-num silver-dim">01</div>
+        <div class="img-frame">
+          <img src="https://customer-assets.emergentagent.com/job_essence-reveal/artifacts/v9suvezr_0FCE3A58-28C3-4010-A9ED-031D15C3AA6B.jpg" alt="Dominic sul palco">
+          <div class="img-grad"></div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:140ms">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
+          <span class="eyebrow">01 — Il percorso</span>
+          <span style="width:2.5rem;height:1px;background:rgba(200,204,209,.4)"></span>
+        </div>
+        <h2 class="h2" style="margin-bottom:3rem">
+          <span class="silver-text">Il percorso,</span>
+          <span class="italic silver-dim">senza filtri.</span>
+        </h2>
+        <div class="body-text">
+          <p>Ho iniziato a lavorare presto, facendo diversi lavori senza una vera direzione. Mi impegnavo, ma non mi riconoscevo in quella vita. Lavoravo, aspettavo il weekend e ricominciavo da capo — con la sensazione costante di stare sprecando tempo senza costruire niente di mio.</p>
+          <p>Col tempo questa cosa ha iniziato a pesare davvero. Sapevo di poter fare di più, ma non avevo un contesto e stavo cercando di capire tutto da solo.</p>
+          <p>Nel <span class="silver-text">2022</span> ho iniziato nel network marketing. Non perché fosse tutto chiaro, ma perché era la prima cosa che mi metteva in un ambiente dove si parlava di crescita, business e responsabilità personale.</p>
+          <p>Da lì ho iniziato a costruire qualcosa di mio, a vedere una direzione concreta. Ho sbagliato, ho perso, ho ricominciato.</p>
+          <p>Oggi lavoro con persone che si trovano nella stessa situazione: lucide, ma bloccate. Con la sensazione di poter fare di più, senza sapere da dove partire.</p>
+        </div>
+        <div class="cta-block">
+          <div class="quote-q silver-dim italic">Ti ritrovi in questo?</div>
+          <p style="color:var(--ink-dim);margin:0 0 2rem;max-width:32rem">Puoi approfondire e capire se ha senso per te. Senza impegno.</p>
+          <a class="btn btn-silver" href="https://docs.google.com/forms/d/e/1FAIpQLSeMZeA9GvGD3Y9q87oKyyHNWH76gWYmqmCgBXAU4pKKVilt-g/viewform" target="_blank" rel="noopener"><span>Richiedi informazioni</span><span class="arrow">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="sec">
+  <div class="wide">
+    <div class="team-grid">
+      <div class="reveal team-frame">
+        <img src="https://customer-assets.emergentagent.com/job_essence-reveal/artifacts/zkwy7pzs_E5BDD85E-D551-4D77-B28B-27493E8858D4.jpg" alt="Il team">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(8,9,11,.7),transparent)"></div>
+        <div class="team-label eyebrow">Il team</div>
+      </div>
+      <div class="reveal" style="transition-delay:140ms">
+        <div class="eyebrow" style="color:var(--silver);margin-bottom:2rem">— Il team</div>
+        <h2 class="h2">
+          <span class="silver-text">Un contesto che ti</span>
+          <span class="silver-text">costringe a crescere.</span>
+          <span class="italic silver-dim" style="margin-top:.5rem">Non solo a lavorare.</span>
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 COSA FACCIO -->
+<section id="cosa" class="sec" style="padding:8rem 3rem">
+  <div class="cosa-bg">
+    <div class="cosa-img" style="background-image:url('https://customer-assets.emergentagent.com/job_essence-reveal/artifacts/w37p5cxx_6458785B-7FF8-43A5-805C-77D8139A807B.jpg')"></div>
+    <div class="cosa-overlay"></div>
+    <div class="dots"></div>
+  </div>
+  <div class="wide" style="position:relative">
+    <div class="silver-line" style="top:-2rem"></div>
+    <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
+      <span class="eyebrow">02 — Cosa faccio</span>
+      <span style="width:3rem;height:1px;background:rgba(200,204,209,.4)"></span>
+    </div>
+    <h2 class="h2 reveal" style="margin-bottom:3rem">
+      <span class="silver-text">Costruire un business.</span>
+      <span class="italic silver-dim">Sviluppare competenze</span>
+      <span class="italic silver-dim">che restano tue.</span>
+    </h2>
+    <p class="reveal body-text" style="max-width:48rem;color:var(--silver);font-size:clamp(1.15rem,1.5vw,1.5rem);margin-bottom:4rem">
+      L'obiettivo è costruire un business e sviluppare educazione finanziaria nel tempo. Nel processo costruisci competenze reali — non teoria. Tutto questo avviene dentro un contesto di ambiente e mentalità.
+    </p>
+    <div class="skills">
+      <div class="skill reveal"><span class="skill-num silver-dim">01</span><span class="skill-t">Comunicazione</span></div>
+      <div class="skill reveal" style="transition-delay:80ms"><span class="skill-num silver-dim">02</span><span class="skill-t">Vendita</span></div>
+      <div class="skill reveal" style="transition-delay:160ms"><span class="skill-num silver-dim">03</span><span class="skill-t">Leadership</span></div>
+      <div class="skill reveal"><span class="skill-num silver-dim">04</span><span class="skill-t">Gestione del team</span></div>
+      <div class="skill reveal" style="transition-delay:80ms"><span class="skill-num silver-dim">05</span><span class="skill-t">Public speaking</span></div>
+      <div class="skill reveal" style="transition-delay:160ms"><span class="skill-num silver-dim">06</span><span class="skill-t">Community building</span></div>
+    </div>
+    <div class="cosa-foot reveal">
+      <div class="quote-q silver-dim italic">Non è teoria. È pratica continua.</div>
+      <div class="eyebrow" style="color:var(--silver)">— Dominic Rossi</div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 IL PROGETTO -->
+<section id="progetto" class="sec bg-2">
+  <div class="silver-line"></div>
+  <div class="wide">
+    <div class="grid-2" style="grid-template-columns:1fr 1.2fr">
+      <div class="reveal">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
+          <span class="eyebrow">03 — Il progetto</span>
+        </div>
+        <div class="img-frame">
+          <img src="https://customer-assets.emergentagent.com/job_essence-reveal/artifacts/abadetq9_IMG_1552.JPG" alt="Il progetto">
+          <div class="img-grad"></div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:120ms">
+        <h2 class="h2" style="margin-bottom:2.5rem">
+          <span class="silver-text">Non è per tutti.</span>
+          <span class="italic silver-dim">È per chi vuole costruire</span>
+          <span class="italic silver-dim">qualcosa di proprio.</span>
+        </h2>
+        <p class="body-text" style="color:var(--silver);font-size:clamp(1.15rem,1.5vw,1.5rem);margin-bottom:1.5rem">
+          Faccio parte di un progetto basato su crescita personale, business e sviluppo di competenze reali.
+        </p>
+        <p class="body-text" style="color:var(--ink-dim);font-size:clamp(1.05rem,1.3vw,1.25rem);margin-bottom:3rem">
+          Non è un corso. Non è un sistema automatico. È un contesto che ti mette in gioco, ti porta a prendere decisioni e a costruire qualcosa di tuo nel tempo.
+        </p>
+        <a class="btn btn-silver" href="https://docs.google.com/forms/d/e/1FAIpQLSeMZeA9GvGD3Y9q87oKyyHNWH76gWYmqmCgBXAU4pKKVilt-g/viewform" target="_blank" rel="noopener"><span>Richiedi informazioni</span><span class="arrow">↗</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 TESTIMONIANZE -->
+<section id="testi" class="sec">
+  <div class="silver-line"></div>
+  <div class="wide">
+    <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
+      <span class="eyebrow">04 — Testimonianze</span>
+      <span style="width:3rem;height:1px;background:rgba(200,204,209,.4)"></span>
+    </div>
+    <h2 class="h2 reveal" style="margin-bottom:1.5rem">
+      <span class="silver-text">Quello che dicono</span>
+      <span class="italic silver-dim">le persone con cui lavoro.</span>
+    </h2>
+    <p class="reveal" style="color:var(--ink-dim);font-size:clamp(1.15rem,1.5vw,1.5rem);max-width:36rem;font-weight:300">Persone reali. Messaggi reali. Nessun filtro.</p>
+    <div class="testi-grid" id="testiGrid"></div>
+  </div>
+</section>
+
+<!-- 05 CONTENUTI -->
+<section id="contenuti" class="sec bg-2">
+  <div class="silver-line"></div>
+  <div class="wide">
+    <div class="yt-grid">
+      <div class="reveal">
+        <div class="eyebrow" style="margin-bottom:2rem">05 — Contenuti</div>
+        <h2 class="h2" style="margin-bottom:2rem">
+          <span class="silver-text">Il canale</span>
+          <span class="italic silver-dim">YouTube.</span>
+        </h2>
+        <p class="body-text" style="color:var(--silver);font-size:clamp(1.15rem,1.5vw,1.5rem);margin-bottom:3rem">
+          Documentazione del percorso, riflessioni pratiche, business. Niente teorie. Solo quello che sto realmente facendo.
+        </p>
+        <a class="btn btn-silver" href="https://www.youtube.com/@Dominic_Rossi" target="_blank" rel="noopener"><span>Apri il canale</span><span class="arrow">↗</span></a>
+      </div>
+      <a class="reveal yt-box" href="https://www.youtube.com/@Dominic_Rossi" target="_blank" rel="noopener" style="transition-delay:150ms">
+        <div class="dots"></div>
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="sg" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#f8f9fa"/><stop offset="50%" stop-color="#c8ccd1"/><stop offset="100%" stop-color="#9ca1a7"/>
+          </linearGradient></defs>
+          <path fill="url(#sg)" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+        <span class="handle eyebrow">@Dominic_Rossi</span>
+        <div class="scan"></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="contatti" class="final" style="position:relative">
+  <div class="silver-line"></div>
+  <div class="container reveal">
+    <div class="eyebrow" style="margin-bottom:1.5rem">06 — Contatti</div>
+    <h2 class="h2" style="font-size:clamp(2.8rem,7.5vw,6.5rem);line-height:.95">
+      <span class="silver-text">Se vuoi capire</span>
+      <span class="italic silver-dim">come funziona.</span>
+    </h2>
+    <p>Nessun impegno. Puoi richiedere informazioni e capire se ha senso per te.</p>
+    <a class="btn btn-silver lg" href="https://docs.google.com/forms/d/e/1FAIpQLSeMZeA9GvGD3Y9q87oKyyHNWH76gWYmqmCgBXAU4pKKVilt-g/viewform" target="_blank" rel="noopener"><span>Richiedi informazioni</span><span class="arrow">↗</span></a>
+  </div>
+
+  <div class="marquee">
+    <div class="marquee-track" id="marqueeTrack"></div>
+  </div>
+
+  <footer>
+    <div class="eyebrow">© MMXXVI — Dominic Rossi</div>
+    <div class="links eyebrow">
+      <a href="https://www.youtube.com/@Dominic_Rossi" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMZeA9GvGD3Y9q87oKyyHNWH76gWYmqmCgBXAU4pKKVilt-g/viewform" target="_blank" rel="noopener">Contatti</a>
+    </div>
+  </footer>
+</section>
+
+<script>
+/* Intro */
+setTimeout(()=>{document.getElementById('introLine').classList.add('grow')},800);
+setTimeout(()=>{document.getElementById('intro').classList.add('hide')},1800);
+setTimeout(()=>{document.getElementById('intro').remove()},2800);
+
+/* Hero staged fades */
+document.querySelectorAll('.fade').forEach(el=>{
+  const d=parseInt(el.dataset.delay||0,10);
+  setTimeout(()=>el.classList.add('on'),d);
+});
+
+/* Reveal on scroll */
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+},{threshold:.14});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* Testimonials */
+const TESTI=[
+  {t:"Sarò sempre grato a tutto ciò che hai fatto per me e per tutti noi bro, te lo sei meritato tutto",a:"Membro del team"},
+  {t:"Dom comunque mi sta aiutando tanto questo percorso",a:"Membro del team"},
+  {t:"Ci tengo a dire che adoro il fatto che sei diretto e mi dici le cose come stanno. Mi hai aiutato tantissimo a guardarmi dentro quando c'era bisogno.",a:"Membro del team"},
+  {t:"Parte gli scherzi bro ti devo veramente tanto, gran parte dei risultati e della crescita fatta deriva tanto da te. Te ne sono davvero grato, credimi. Andiamoci a prendere tutto.",a:"Membro del team"},
+  {t:"Penso ti meriti di saperlo perciò te lo dico: c'è un team che pensa che tu matematicamente sei uno di quei pochi che farà la differenza. È un momento duro ma è incredibile vederti in piedi che cerchi di migliorare la situazione nonostante tutto.",a:"Membro del team"},
+  {t:"Dom, come puoi vedere stanno arrivando i risultati — tutto grazie a te che sin dal primo giorno mi hai permesso di inserirmi in questa attività. Sono più di un anno e mezzo che faccio questa attività e sono davvero grato dell'aiuto e del supporto che mi hai dato anche nei momenti peggiori.",a:"Giuseppe"},
+  {t:"Questo mese ho fatto il mio primo consultant. Un grazie speciale a Dominic, il nostro nuovo rubino, che mi è stato super vicino dall'inizio alla fine.",a:"Membro del team"},
+  {t:"Ho sempre pensato di non essere capace di tradare e investire. L'anno scorso mi sono messa a studiare sul serio partendo dal cambiare la mia credenza. Grazie per questo gruppo, sono molto grata di farne parte.",a:"OV. Students"}
+];
+const grid=document.getElementById('testiGrid');
+TESTI.forEach((x,i)=>{
+  const d=document.createElement('div');
+  d.className='testi reveal';
+  d.style.transitionDelay=(i%3)*90+'ms';
+  d.innerHTML='<div class="q silver-dim">&ldquo;</div><p class="t">'+x.t+'</p><div class="a eyebrow"><span class="bar"></span>'+x.a+'</div>';
+  grid.appendChild(d);
+  io.observe(d);
+});
+
+/* Marquee */
+const words=["ROSSI","·","DOMINIC","·","ROSSI","·","DOMINIC","·"];
+const track=document.getElementById('marqueeTrack');
+for(let k=0;k<2;k++){
+  const row=document.createElement('div');row.style.display='flex';
+  words.forEach(w=>{const s=document.createElement('span');s.className='silver-dim';s.textContent=w;row.appendChild(s)});
+  track.appendChild(row);
+}
+
+/* Smooth scroll for anchor links */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',(e)=>{
+    const id=a.getAttribute('href');
+    if(id.length>1){const el=document.querySelector(id);if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth'})}}
+  });
+});
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"7f7b0fd8732c4326aae4b9d58d5c514a","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
