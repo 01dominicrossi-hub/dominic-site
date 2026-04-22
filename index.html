@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Dominic Rossi — Esperienza</title>
+<meta name="theme-color" content="#000000" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,200;1,9..144,300&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<style>
+  :root{
+    --bg:#000000;
+    --bg-2:#050608;
+    --bg-3:#0a0d14;
+    --ink:#eaf0ff;
+    --ink-dim:#6d7890;
+    --blue:#1f6feb;
+    --blue-hi:#4f9dff;
+    --blue-lo:#0a3b8c;
+    --blue-glow:rgba(79,157,255,0.5);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+  html,body{background:var(--bg);color:var(--ink);font-family:"Inter Tight",sans-serif;overflow-x:hidden}
+  html{scroll-behavior:smooth}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  ::selection{background:var(--blue);color:#fff}
+
+  .serif{font-family:"Fraunces",serif;font-optical-sizing:auto;letter-spacing:-0.02em}
+  .italic{font-style:italic}
+  .eyebrow{font-size:.72rem;letter-spacing:.4em;text-transform:uppercase;font-weight:500;color:var(--ink-dim)}
+  .blue{color:var(--blue-hi)}
+  .dim{color:var(--ink-dim)}
+
+  /* Custom cursor */
+  .cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:screen;border-radius:50%;will-change:transform}
+  .cursor-dot{width:6px;height:6px;background:var(--blue-hi);box-shadow:0 0 12px var(--blue-hi),0 0 3px #fff;transform:translate(-50%,-50%)}
+  .cursor-ring{width:38px;height:38px;border:1px solid rgba(79,157,255,.5);transform:translate(-50%,-50%);transition:width .35s cubic-bezier(.22,1,.36,1),height .35s cubic-bezier(.22,1,.36,1),border-color .35s,background-color .35s,box-shadow .35s}
+  .cursor-ring.grow{width:60px;height:60px;border-color:var(--blue-hi);background:rgba(31,111,235,.12);box-shadow:0 0 22px rgba(79,157,255,.35),inset 0 0 22px rgba(79,157,255,.2)}
+  @media(hover:none),(max-width:900px){.cursor-dot,.cursor-ring{display:none}}
+  body{cursor:none}
+  @media(hover:none),(max-width:900px){body{cursor:auto}}
+  a,button,.btn{cursor:none}
+  @media(hover:none),(max-width:900px){a,button,.btn{cursor:pointer}}
+
+  /* Grain */
+  .grain{pointer-events:none;position:fixed;inset:0;z-index:100;opacity:.1;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* Progress bar (scroll indicator) */
+  .progress{position:fixed;top:0;left:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue-hi),transparent);z-index:90;transform-origin:left;transform:scaleX(0);box-shadow:0 0 12px var(--blue-glow)}
+
+  /* Fixed brand mark */
+  .mark{position:fixed;top:1.5rem;left:1.5rem;z-index:60;display:flex;align-items:center;gap:.6rem;pointer-events:none;opacity:.85}
+  .mark .dot{width:5px;height:5px;border-radius:50%;background:var(--blue-hi);box-shadow:0 0 14px var(--blue-hi),0 0 4px #fff;animation:pulse 2.8s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.25)}}
+  .mark .t{font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;font-weight:500}
+  .chapter{position:fixed;top:1.55rem;right:1.5rem;z-index:60;font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;color:var(--ink-dim);opacity:0;transition:opacity .6s}
+  .chapter.show{opacity:1}
+
+  /* ==================================================== SCENES base */
+  .scene{position:relative;width:100%;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:8vh 6vw;overflow:hidden}
+  .scene-tall{min-height:120vh}
+  .scene-xl{min-height:160vh}
+
+  /* ==================================================== HERO */
+  .hero{height:100vh;min-height:100vh}
+  .hero-bg{position:absolute;inset:0;overflow:hidden}
+  .hero-img{position:absolute;inset:-5%;background-size:cover;background-position:center;will-change:transform}
+  .hero-veil{position:absolute;inset:0;background:
+    radial-gradient(ellipse at 50% 40%,transparent 0%,rgba(0,0,0,.45) 60%,rgba(0,0,0,.9) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,.5) 50%,#000 100%)
+  }
+  .hero-tint{position:absolute;inset:0;background:radial-gradient(ellipse at 80% 30%,rgba(31,111,235,.2),transparent 55%);mix-blend-mode:screen}
+  .hero-content{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:0 0 8vh 0;z-index:2}
+  .h1{font-family:"Fraunces",serif;font-weight:200;letter-spacing:-0.02em;line-height:0.95;font-size:clamp(2.8rem,8.2vw,9rem);max-width:18ch}
+  .h1 .line{display:block;overflow:hidden;padding-bottom:.05em}
+  .h1 .line > span{display:inline-block;will-change:transform,opacity;transform:translateY(110%);opacity:0}
+  .hero-sub{margin-top:clamp(2rem,4vh,3rem);color:var(--ink);font-size:clamp(1.05rem,1.6vw,1.45rem);font-weight:300;line-height:1.4;max-width:38ch;opacity:0;transform:translateY(20px)}
+  .hero-sub em{font-style:italic;font-family:"Fraunces",serif;font-weight:300;color:var(--blue-hi)}
+  .hero-cta{margin-top:clamp(2rem,5vh,3.5rem);display:flex;gap:1rem;align-items:center;opacity:0;transform:translateY(16px)}
+
+  .btn{display:inline-flex;align-items:center;gap:.85rem;padding:1.15rem 1.9rem;border-radius:999px;font-weight:500;letter-spacing:.02em;font-size:1rem;cursor:pointer;transition:all .45s cubic-bezier(.22,1,.36,1);position:relative;isolation:isolate}
+  .btn-blue{background:var(--blue);color:#fff;box-shadow:0 0 0 1px rgba(79,157,255,.4),0 0 40px rgba(31,111,235,.35)}
+  .btn-blue::after{content:"";position:absolute;inset:-2px;border-radius:999px;background:radial-gradient(circle at 50% 50%,rgba(79,157,255,.55),transparent 65%);z-index:-1;opacity:.6;filter:blur(8px);transition:opacity .5s}
+  .btn-blue:hover{background:var(--blue-hi);transform:translateY(-1px);box-shadow:0 0 0 1px rgba(79,157,255,.6),0 0 60px rgba(79,157,255,.55)}
+  .btn-blue:hover::after{opacity:1;inset:-4px}
+  .btn-ghost{border:1px solid rgba(255,255,255,.15);color:var(--ink);background:rgba(10,12,18,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .btn-ghost:hover{border-color:var(--blue-hi);color:var(--blue-hi)}
+  .arrow{display:inline-block;transition:transform .45s cubic-bezier(.22,1,.36,1)}
+  .btn:hover .arrow{transform:translate(3px,-3px)}
+  .btn-lg{padding:1.4rem 2.3rem;font-size:1.1rem}
+
+  .scroll-cue{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.7rem;color:var(--ink-dim);font-size:.68rem;letter-spacing:.4em;text-transform:uppercase;opacity:0;animation:cueFade 1s ease 3.2s forwards}
+  @keyframes cueFade{to{opacity:.7}}
+  .scroll-cue .bar{width:1px;height:36px;background:linear-gradient(to bottom,transparent,var(--blue-hi));animation:cueBar 2s ease-in-out infinite}
+  @keyframes cueBar{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+
+  /* ==================================================== LIMBO */
+  .limbo{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;min-height:140vh;padding:0 8vw;position:relative}
+  .limbo-bg{position:absolute;inset:0;background:
+    radial-gradient(ellipse at 30% 60%,rgba(10,59,140,.18),transparent 55%),
+    radial-gradient(circle at 75% 30%,rgba(31,111,235,.08),transparent 50%);
+  }
+  .limbo-img{position:absolute;inset:0;background-position:center;background-size:cover;opacity:.14;filter:grayscale(1) brightness(.35) contrast(1.2) blur(2px);mix-blend-mode:screen}
+  .limbo-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,#000,rgba(0,0,0,.85) 40%,rgba(0,0,0,.85) 60%,#000)}
+  .limbo-lines{position:relative;z-index:2;display:flex;flex-direction:column;gap:1.5vh}
+  .limbo-lines .word{font-family:"Fraunces",serif;font-weight:200;font-size:clamp(3rem,10vw,11rem);line-height:.95;letter-spacing:-0.03em;opacity:0;transform:translateY(40px);will-change:transform,opacity}
+  .limbo-lines .word.last{font-style:italic;color:transparent;-webkit-text-stroke:1px rgba(234,240,255,.45)}
+  .limbo-lines .word em{font-style:normal;background:linear-gradient(180deg,#fff 0%,var(--blue-hi) 60%,var(--blue) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .limbo-lines .word .strike{position:relative}
+  .limbo-lines .word .strike::after{content:"";position:absolute;left:0;right:0;top:52%;height:1px;background:var(--blue-hi);box-shadow:0 0 14px var(--blue-hi);transform-origin:left;transform:scaleX(0)}
+
+  /* ==================================================== TRANSITION FLASH */
+  .flash{position:fixed;inset:0;z-index:95;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 50%,rgba(79,157,255,.75),rgba(10,59,140,.4) 35%,transparent 65%);mix-blend-mode:screen}
+  .beam{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3}
+  .beam::before,.beam::after{content:"";position:absolute;top:-20%;bottom:-20%;width:2px;background:linear-gradient(to bottom,transparent,var(--blue-hi),transparent);box-shadow:0 0 24px var(--blue-glow),0 0 60px rgba(31,111,235,.35);opacity:0;transform:translateX(-50%) skewX(-6deg)}
+  .beam::before{left:30%}
+  .beam::after{left:72%;width:1px}
+
+  /* ==================================================== PERCORSO */
+  .percorso{position:relative;padding:14vh 0 16vh;overflow:hidden;background:#000}
+  .percorso-bg{position:absolute;inset:0;overflow:hidden}
+  .percorso-img{position:absolute;inset:-5%;background-position:center 35%;background-size:cover;will-change:transform;transform:scale(1.02);filter:brightness(.55)}
+  .percorso-veil{position:absolute;inset:0;background:
+    linear-gradient(90deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,.65) 45%,rgba(0,0,0,.5) 100%),
+    linear-gradient(180deg,#000 0%,rgba(0,0,0,.4) 18%,rgba(0,0,0,.4) 82%,#000 100%);
+  }
+  .percorso-blue{position:absolute;inset:0;background:radial-gradient(ellipse at 12% 55%,rgba(31,111,235,.22),transparent 55%);mix-blend-mode:screen}
+  .percorso-inner{position:relative;z-index:2;max-width:860px;margin:0 auto;padding:0 6vw}
+  .percorso-eb{color:var(--blue-hi);margin-bottom:2.5rem;display:block}
+  .percorso-title{font-family:"Fraunces",serif;font-weight:200;font-size:clamp(2.2rem,5.5vw,4.6rem);line-height:1.02;letter-spacing:-.02em;margin-bottom:3.5rem;max-width:18ch}
+  .percorso-title em{font-style:italic;color:var(--blue-hi)}
+  .percorso-p{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(1.15rem,1.8vw,1.6rem);line-height:1.55;letter-spacing:-.005em;color:var(--ink);margin-bottom:2.5rem;max-width:55ch;opacity:0;transform:translateY(28px);will-change:transform,opacity}
+  .percorso-p em{font-style:italic;color:var(--blue-hi)}
+  .percorso-p strong{font-weight:500;color:#fff;font-style:normal}
+  .percorso-p .hl{color:var(--blue-hi);font-style:italic}
+  .percorso-close{margin-top:4rem;padding-top:2rem;border-top:1px solid rgba(79,157,255,.18);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem}
+  .percorso-close .eb{color:var(--blue-hi)}
+
+  /* ==================================================== SKILLS */
+  .skills{padding:18vh 6vw;position:relative;min-height:110vh}
+  .skills-bg{position:absolute;inset:0;overflow:hidden}
+  .skills-img{position:absolute;inset:0;background-position:center;background-size:cover;filter:grayscale(.9) brightness(.28) contrast(1.2)}
+  .skills-tint{position:absolute;inset:0;background:
+    linear-gradient(180deg,#000 0%,rgba(10,13,20,.7) 20%,rgba(10,13,20,.7) 80%,#000 100%),
+    radial-gradient(circle at 70% 30%,rgba(31,111,235,.25),transparent 55%)
+  }
+  .skills-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(79,157,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(79,157,255,.04) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%)}
+  .skills-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto}
+  .skills-eb{margin-bottom:2rem;color:var(--blue-hi)}
+  .skills-title{font-family:"Fraunces",serif;font-weight:200;font-size:clamp(2.2rem,5.5vw,4.8rem);line-height:1.02;letter-spacing:-0.02em;margin-bottom:1.75rem;max-width:18ch}
+  .skills-title em{font-style:italic;color:var(--blue-hi)}
+  .skills-lead{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(1.2rem,2vw,1.75rem);line-height:1.5;letter-spacing:-.005em;color:var(--ink);max-width:50ch;margin-bottom:3.5rem}
+  .skills-lead em{font-style:italic;color:var(--blue-hi)}
+  .skills-lead .sub{display:block;color:var(--ink-dim);font-size:clamp(1rem,1.5vw,1.35rem);margin-top:.5rem;font-weight:300}
+  .skill-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+  .card{position:relative;padding:1.5rem 1.5rem 1.75rem;border:1px solid rgba(79,157,255,.18);background:linear-gradient(180deg,rgba(10,14,24,.55),rgba(5,7,12,.7));backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);overflow:hidden;transition:border-color .5s,transform .5s;opacity:0;transform:translateY(28px)}
+  .card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(79,157,255,.08),transparent 45%);pointer-events:none}
+  .card:hover{border-color:var(--blue-hi);transform:translateY(-4px)}
+  .card:hover .c-num{color:var(--blue-hi);text-shadow:0 0 18px var(--blue-glow)}
+  .c-num{font-family:"Fraunces",serif;font-weight:200;font-size:2rem;color:var(--ink-dim);transition:all .5s;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+  .c-title{margin-top:.6rem;font-size:1.35rem;font-weight:300;letter-spacing:-.01em}
+  .c-line{margin-top:1rem;height:1px;background:linear-gradient(90deg,var(--blue-hi),transparent);transform-origin:left;transform:scaleX(.2);transition:transform .5s}
+  .card:hover .c-line{transform:scaleX(1)}
+  .skills-foot{margin-top:4rem;display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap}
+  .skills-foot .q{font-family:"Fraunces",serif;font-style:italic;font-weight:300;font-size:clamp(1.3rem,2vw,1.8rem);max-width:30ch}
+
+  /* ==================================================== TEAM */
+  .team{position:relative;min-height:120vh;display:flex;align-items:center;justify-content:center;padding:10vh 6vw}
+  .team-bg{position:absolute;inset:0;overflow:hidden}
+  .team-img{position:absolute;inset:0;background-position:center;background-size:cover;will-change:transform,filter;filter:brightness(.45) contrast(1.1)}
+  .team-veil{position:absolute;inset:0;background:linear-gradient(180deg,#000 0%,rgba(0,0,0,.35) 30%,rgba(0,0,0,.45) 70%,#000 100%)}
+  .team-blue{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(31,111,235,.15),transparent 60%);mix-blend-mode:screen}
+  .team-copy{position:relative;z-index:2;text-align:center;max-width:24ch}
+  .team-eb{margin-bottom:2rem;color:var(--blue-hi)}
+  .team-q{font-family:"Fraunces",serif;font-weight:200;font-size:clamp(2rem,6vw,5.2rem);line-height:1.05;letter-spacing:-.02em}
+  .team-q em{font-style:italic;color:var(--blue-hi)}
+
+  /* ==================================================== TESTIMONIALS */
+  .testi-wrap{padding:16vh 0 12vh;position:relative;overflow:hidden}
+  .testi-head{padding:0 6vw;max-width:1200px;margin:0 auto 5rem}
+  .testi-eb{color:var(--blue-hi);margin-bottom:2rem}
+  .testi-title{font-family:"Fraunces",serif;font-weight:200;font-size:clamp(2rem,5vw,4.2rem);line-height:1.05;letter-spacing:-.02em;max-width:20ch}
+  .testi-title em{font-style:italic;color:var(--blue-hi)}
+  .testi-sub{margin-top:1.5rem;color:var(--ink-dim);font-size:clamp(1rem,1.3vw,1.2rem);max-width:42ch}
+
+  .testi-scroller{position:relative;overflow:hidden;padding:.5rem 0 1rem}
+  .testi-track{display:flex;gap:1.5rem;padding:0 6vw;width:max-content;animation:testiSlide 90s linear infinite;will-change:transform}
+  @keyframes testiSlide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .testi-scroller:hover .testi-track{animation-play-state:paused}
+  .testi-card{flex:0 0 auto;width:min(80vw,26rem);min-height:22rem;padding:2rem;border:1px solid rgba(79,157,255,.15);background:linear-gradient(180deg,rgba(10,14,24,.5),rgba(5,7,12,.7));backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);position:relative;transition:border-color .5s}
+  .testi-card:hover{border-color:var(--blue-hi)}
+  .testi-card .q{font-family:"Fraunces",serif;font-weight:300;font-size:3rem;line-height:1;color:var(--blue-hi);opacity:.6;margin-bottom:1rem}
+  .testi-card .t{color:var(--ink);font-size:1.05rem;font-weight:300;line-height:1.65;margin-bottom:2rem}
+  .testi-card .a{display:flex;align-items:center;gap:.5rem;color:var(--blue-hi);font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;font-weight:500}
+  .testi-card .a .bar{width:1.5rem;height:1px;background:var(--blue-hi);box-shadow:0 0 10px var(--blue-glow)}
+  .testi-fade-l,.testi-fade-r{position:absolute;top:0;bottom:0;width:10vw;max-width:120px;pointer-events:none;z-index:2}
+  .testi-fade-l{left:0;background:linear-gradient(to right,#000,transparent)}
+  .testi-fade-r{right:0;background:linear-gradient(to left,#000,transparent)}
+  @media(prefers-reduced-motion:reduce){.testi-track{animation:none;overflow-x:auto;scroll-snap-type:x mandatory}.testi-card{scroll-snap-align:center}}
+
+  /* ==================================================== YT SLIP */
+  .yt-slip{position:relative;padding:14vh 6vw 8vh;text-align:center;overflow:hidden;background:#000}
+  .yt-slip::before{content:"";position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,var(--blue-hi),transparent);box-shadow:0 0 18px var(--blue-glow);opacity:.45}
+  .yt-slip-eb{color:var(--blue-hi);margin-bottom:1.5rem;display:inline-block}
+  .yt-slip-title{font-family:"Fraunces",serif;font-weight:200;font-size:clamp(2rem,5vw,4rem);line-height:1.05;letter-spacing:-.02em;margin-bottom:2rem}
+  .yt-slip-title em{font-style:italic;color:var(--blue-hi)}
+  .yt-slip-sub{color:var(--ink-dim);max-width:36ch;margin:0 auto 2.5rem;font-size:clamp(.95rem,1.1vw,1.1rem);line-height:1.6}
+  .btn-yt{background:linear-gradient(180deg,#1f2430 0%,#0f131c 100%);color:#fff;border:1px solid rgba(79,157,255,.3);display:inline-flex;align-items:center;gap:.85rem;padding:1.15rem 1.9rem;border-radius:999px;font-weight:500;font-size:1rem;transition:all .45s cubic-bezier(.22,1,.36,1);position:relative;isolation:isolate}
+  .btn-yt:hover{border-color:var(--blue-hi);background:linear-gradient(180deg,#263142 0%,#0f131c 100%);box-shadow:0 0 34px rgba(79,157,255,.35)}
+  .btn-yt .yt-ico{width:22px;height:22px;display:inline-block}
+  .yt-slip .handle{margin-top:1.25rem;font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:var(--ink-dim);font-weight:500}
+
+  /* ==================================================== FINAL */
+  .final{min-height:110vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16vh 6vw 10vh;position:relative;background:#000}
+  .final::before{content:"";position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--blue-hi),transparent);box-shadow:0 0 20px var(--blue-glow);opacity:.4}
+  .final-core{position:absolute;width:min(70vmin,700px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(31,111,235,.18),transparent 60%);filter:blur(10px);pointer-events:none;animation:orb 9s ease-in-out infinite}
+  @keyframes orb{0%,100%{transform:scale(1);opacity:.55}50%{transform:scale(1.08);opacity:.75}}
+  .final-eb{color:var(--blue-hi);margin-bottom:3rem;position:relative;z-index:2}
+  .final-title{font-family:"Fraunces",serif;font-weight:200;font-size:clamp(3rem,9vw,8rem);line-height:0.95;letter-spacing:-.02em;margin-bottom:5rem;position:relative;z-index:2}
+  .final-title em{font-style:italic;color:var(--blue-hi)}
+  .final-title .l{display:block;overflow:hidden}
+  .final-title .l > span{display:inline-block;transform:translateY(105%);opacity:0;will-change:transform,opacity}
+  .final-cta-wrap{position:relative;z-index:2;opacity:0;transform:translateY(16px)}
+
+  footer{padding:3rem 6vw;border-top:1px solid rgba(79,157,255,.12);display:flex;flex-direction:column;gap:1rem;align-items:center;justify-content:space-between;text-align:center;color:var(--ink-dim);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase}
+  footer a:hover{color:var(--blue-hi)}
+  footer .links{display:flex;gap:2rem}
+  @media(min-width:768px){footer{flex-direction:row;text-align:left}}
+
+  /* Intro overlay */
+  .intro{position:fixed;inset:0;z-index:200;background:#000;display:flex;align-items:center;justify-content:center;transition:opacity 1s cubic-bezier(.22,1,.36,1)}
+  .intro.hide{opacity:0;pointer-events:none}
+  .intro-mark{text-align:center}
+  .intro-mark .t{font-size:.72rem;letter-spacing:.5em;text-transform:uppercase;color:var(--ink);font-weight:500;opacity:0}
+  .intro-mark .l{margin:1.5rem auto 0;height:1px;width:0;background:linear-gradient(90deg,transparent,var(--blue-hi),transparent);box-shadow:0 0 12px var(--blue-glow)}
+
+  /* =================================== RESPONSIVE */
+  @media(max-width:900px){
+    .skill-cards{grid-template-columns:1fr 1fr}
+    .mark .t{font-size:.65rem}
+    .chapter{font-size:.62rem}
+  }
+  @media(max-width:640px){
+    .scene,.skills,.team,.final{padding-left:1.5rem;padding-right:1.5rem}
+    .limbo{padding:0 1.5rem}
+    .skill-cards{grid-template-columns:1fr}
+    .percorso-copy{padding:0 1.5rem}
+    .testi-head{padding:0 1.5rem}
+    .testi-track{padding:0 1.5rem}
+    .mark{top:1rem;left:1rem}
+    .chapter{top:1.05rem;right:1rem}
+    .hero-content{padding-bottom:5vh}
+    footer{padding:2rem 1.5rem}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .h1 .line>span,.phrase,.card,.limbo-lines .word,.hero-sub,.hero-cta{opacity:1!important;transform:none!important}
+  }
+</style>
+</head>
+<body>
+
+<!-- Intro overlay -->
+<div class="intro" id="intro">
+  <div class="intro-mark">
+    <div class="t" id="introT">DOMINIC ROSSI</div>
+    <div class="l" id="introL"></div>
+  </div>
+</div>
+
+<div class="grain"></div>
+<div class="progress" id="progress"></div>
+<div class="mark"><span class="dot"></span><span class="t">DOMINIC ROSSI</span></div>
+<div class="chapter" id="chapter">00 — INIZIO</div>
+<div class="flash" id="flash"></div>
+
+<!-- ============================= HERO ============================= -->
+<section class="hero" id="s-hero">
+  <div class="hero-bg">
+    <div class="hero-img" id="heroImg" style="background-image:url('https://customer-assets.emergentagent.com/job_essence-reveal/artifacts/det557qb_60CCB5AC-E7A2-43A7-9095-12646C484C0F.jpg')"></div>
+    <div class="hero-veil"></div>
+    <div class="hero-tint"></div>
+  </div>
+  <div class="hero-content">
+    <h1 class="h1">
+      <span class="line"><span>Se non stai</span></span>
+      <span class="line"><span>costruendo niente,</span></span>
+      <span class="line italic"><span>prima o poi lo senti.</span></span>
+    </h1>
+    <p class="hero-sub">
+      Non è mancanza di impegno.<br>
+      <em>È mancanza di direzione.</em>
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-blue" href="https://docs.google.com/forms/d/e/1FAIpQLSeMZeA9GvGD3Y9q87oKyyHNWH76gWYmqmCgBXAU4pKKVilt-g/viewform" target="_blank" rel="noopener">
+        <span>Capisci se ha senso per te</span><span class="arrow">↗</span>
+      </a>
+      <a class="btn btn-ghost" href="#limbo"><span>Scendi</span></a>
+    </div>
+  </div>
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <span class="bar"></span>
+  </div>
+</section>
+
+<!-- ============================= LIMBO ============================= -->
+<section class="limbo" id="limbo">
+  <div class="limbo-img" style="background-image:url('https://customer-assets.emergentagent.com/job_essence-reveal/artifacts/w37p5cxx_6458785B-7FF8-43A5-805C-77D8139A807B.jpg')"></div>
+  <div class="limbo-overlay"></div>
+  <div class="limbo-bg"></div>
+  <div class="limbo-lines">
+    <div class="word"><em>Lavori.</em></div>
+    <div class="word"><em>Ti impegni.</em></div>
+    <div class="word last"><span class="strike">Ma non stai costruendo niente.</span></div>
+  </div>
+</section>
+
+<!-- ============================= PERCORSO ============================= -->
+<section class="percorso" id="percorso">
+  <div class="percorso-bg">
+    <div class="percorso-img" id="percorsoImg" style="background-image:url('https://customer-assets.emergentagent.com/job_essence-reveal/artifacts/v9suvezr_0FCE3A58-28C3-4010-A9ED-031D15C3AA6B.jpg')"></div>
+    <div class="percorso-veil"></div>
+    <div class="percorso-blue"></div>
+    <div class="beam" id="beam"></div>
+  </div>
+  <div class="percorso-inner">
+    <span class="eyebrow percorso-eb">01 — Il percorso</span>
+    <h2 class="percorso-title">Il percorso, <em>senza filtri.</em></h2>
+
+    <p class="percorso-p">
+      Ho iniziato a lavorare <em>presto</em>, facendo diversi lavori senza una vera direzione. Mi impegnavo, facevo quello che dovevo fare, ma non mi riconoscevo in quella vita. Lavoravo, aspettavo il weekend, e poi si ripartiva, sempre nello stesso modo.
+    </p>
+
+    <p class="percorso-p">
+      A un certo punto però <em>lo senti davvero</em>. Non è stanchezza, non è voglia di cambiare lavoro. È la sensazione che stai usando tempo della tua vita senza costruire niente di tuo. I giorni passano, le settimane si accumulano, e tu sei fermo nello stesso punto, con la consapevolezza che potresti fare di più ma senza una direzione chiara.
+    </p>
+
+    <p class="percorso-p">
+      Nel <span class="hl">2022</span> ho iniziato nel network marketing, non perché fosse tutto chiaro, ma perché era la prima volta che entravo in un ambiente dove si parlava di business, crescita e responsabilità personale. Da lì ho iniziato a costruire davvero, <em>sbagliando, perdendo e ricominciando</em>, ma con la sensazione concreta di stare andando da qualche parte.
+    </p>
+
+    <p class="percorso-p">
+      Oggi lavoro con persone che si trovano esattamente lì dove ero io: <em>lucide, ambiziose, ma bloccate.</em> Non vendo scorciatoie, creo un contesto dove puoi costruire qualcosa di tuo, sviluppare competenze reali ed entrare in un ambiente che ti spinge a crescere. Non è per tutti, ma se ti ritrovi in questo, puoi capire se ha senso per te.
+    </p>
+
+    <div class="percorso-close">
+      <span class="eyebrow eb">— Dominic Rossi</span>
+      <a class="btn btn-blue" href="https://docs.google.com/forms/d/e/1FAIpQLSeMZeA9GvGD3Y9q87oKyyHNWH76gWYmqmCgBXAU4pKKVilt-g/viewform" target="_blank" rel="noopener">
+        <span>Capisci se ha senso per te</span><span class="arrow">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= SKILLS ============================= -->
+<section class="skills" id="skills">
+  <div class="skills-bg">
+    <div class="skills-img" style="background-image:url('https://customer-assets.emergentagent.com/job_essence-reveal/artifacts/w37p5cxx_6458785B-7FF8-43A5-805C-77D8139A807B.jpg')"></div>
+    <div class="skills-tint"></div>
+    <div class="skills-grid-bg"></div>
+  </div>
+  <div class="skills-inner">
+    <div class="eyebrow skills-eb">02 — Cosa costruisci</div>
+    <h2 class="skills-title">Competenze reali. <em>Non teoria.</em></h2>
+    <p class="skills-lead">
+      L'obiettivo è costruire <em>un'entrata</em> e sviluppare <em>consapevolezza finanziaria.</em>
+      <span class="sub">Capire come generi soldi e come li gestisci, nel lungo periodo.</span>
+    </p>
+    <div class="skill-cards">
+      <div class="card"><div class="c-num">01</div><div class="c-title">Comunicazione</div><div class="c-line"></div></div>
+      <div class="card"><div class="c-num">02</div><div class="c-title">Vendita</div><div class="c-line"></div></div>
+      <div class="card"><div class="c-num">03</div><div class="c-title">Leadership</div><div class="c-line"></div></div>
+      <div class="card"><div class="c-num">04</div><div class="c-title">Gestione team</div><div class="c-line"></div></div>
+      <div class="card"><div class="c-num">05</div><div class="c-title">Public speaking</div><div class="c-line"></div></div>
+      <div class="card"><div class="c-num">06</div><div class="c-title">Community</div><div class="c-line"></div></div>
+    </div>
+    <div class="skills-foot">
+      <div class="q dim">Tutto questo dentro un contesto di <span style="color:var(--blue-hi)">ambiente e mentalità</span>.</div>
+      <div class="eyebrow">— Dominic Rossi</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= TEAM ============================= -->
+<section class="team" id="team">
+  <div class="team-bg">
+    <div class="team-img" id="teamImg" style="background-image:url('https://customer-assets.emergentagent.com/job_essence-reveal/artifacts/abadetq9_IMG_1552.JPG')"></div>
+    <div class="team-veil"></div>
+    <div class="team-blue"></div>
+  </div>
+  <div class="team-copy">
+    <div class="eyebrow team-eb">03 — Il contesto</div>
+    <h2 class="team-q">Un ambiente che ti <em>costringe a crescere.</em></h2>
+  </div>
+</section>
+
+<!-- ============================= TESTIMONIANZE ============================= -->
+<section class="testi-wrap" id="testi">
+  <div class="testi-head">
+    <div class="eyebrow testi-eb">04 — Parole di chi c'è dentro</div>
+    <h2 class="testi-title">Persone reali. <em>Nessun filtro.</em></h2>
+    <p class="testi-sub">Quello che dicono le persone con cui lavoro.</p>
+  </div>
+  <div class="testi-scroller">
+    <div class="testi-track" id="testiTrack"></div>
+    <div class="testi-fade-l"></div>
+    <div class="testi-fade-r"></div>
+  </div>
+</section>
+
+<!-- ============================= YT SLIP ============================= -->
+<section class="yt-slip" id="yt">
+  <div class="eyebrow yt-slip-eb">05 — Contenuti</div>
+  <h2 class="yt-slip-title">Quello che faccio, <em>documentato.</em></h2>
+  <p class="yt-slip-sub">
+    Niente teorie. Solo quello che sto realmente facendo — percorso, riflessioni, business.
+  </p>
+  <a class="btn-yt" href="https://www.youtube.com/@Dominic_Rossi" target="_blank" rel="noopener">
+    <svg class="yt-ico" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="#ff3b3b"/>
+    </svg>
+    <span>Apri il canale YouTube</span><span class="arrow">↗</span>
+  </a>
+  <div class="handle">@Dominic_Rossi</div>
+</section>
+
+<!-- ============================= FINAL ============================= -->
+<section class="final" id="final">
+  <div class="final-core"></div>
+  <div class="eyebrow final-eb">05 — Contatti</div>
+  <h2 class="final-title">
+    <span class="l"><span>Se vuoi capire</span></span>
+    <span class="l italic"><span>come funziona.</span></span>
+  </h2>
+  <div class="final-cta-wrap">
+    <a class="btn btn-blue btn-lg" href="https://docs.google.com/forms/d/e/1FAIpQLSeMZeA9GvGD3Y9q87oKyyHNWH76gWYmqmCgBXAU4pKKVilt-g/viewform" target="_blank" rel="noopener">
+      <span>Richiedi informazioni</span><span class="arrow">↗</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div>© MMXXVI — Dominic Rossi</div>
+  <div class="links">
+    <a href="https://www.youtube.com/@Dominic_Rossi" target="_blank" rel="noopener">YouTube</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMZeA9GvGD3Y9q87oKyyHNWH76gWYmqmCgBXAU4pKKVilt-g/viewform" target="_blank" rel="noopener">Contatti</a>
+  </div>
+</footer>
+
+<script>
+/* ======== Intro ======== */
+requestAnimationFrame(()=>{
+  const t=document.getElementById('introT'), l=document.getElementById('introL');
+  gsap.to(t,{opacity:1,duration:.9,ease:'power2.out'});
+  gsap.to(l,{width:200,duration:1,ease:'power2.inOut',delay:.3});
+  gsap.to('#intro',{opacity:0,duration:1,ease:'power2.inOut',delay:1.6,onComplete:()=>document.getElementById('intro').remove()});
+});
+
+/* ======== GSAP setup ======== */
+gsap.registerPlugin(ScrollTrigger);
+
+const ease='power3.out';
+
+/* Hero reveal */
+gsap.timeline({delay:1.6})
+  .to('.h1 .line>span',{y:0,opacity:1,duration:1.1,ease:'power3.out',stagger:.12})
+  .to('.hero-sub',{opacity:1,y:0,duration:1,ease},'-=0.5')
+  .to('.hero-cta',{opacity:1,y:0,duration:.9,ease},'-=0.6');
+
+/* Hero parallax + slow zoom */
+gsap.to('#heroImg',{
+  scale:1.18, yPercent:8, filter:'brightness(.55)',
+  scrollTrigger:{trigger:'#s-hero',start:'top top',end:'bottom top',scrub:.8}
+});
+gsap.to('.hero-content',{yPercent:-18,opacity:0,scrollTrigger:{trigger:'#s-hero',start:'top top',end:'bottom top',scrub:.8}});
+
+/* Progress bar */
+gsap.to('#progress',{scaleX:1,ease:'none',scrollTrigger:{trigger:document.body,start:'top top',end:'bottom bottom',scrub:true}});
+
+/* Chapter indicator */
+const chapters=[
+  {id:'s-hero',label:'00 — INIZIO'},
+  {id:'limbo',label:'I — LIMBO'},
+  {id:'percorso',label:'II — PERCORSO'},
+  {id:'skills',label:'III — COSTRUZIONE'},
+  {id:'team',label:'IV — CONTESTO'},
+  {id:'testi',label:'V — REALTÀ'},
+  {id:'yt',label:'VI — CONTENUTI'},
+  {id:'final',label:'VII — DECISIONE'},
+];
+const chapterEl=document.getElementById('chapter');
+chapters.forEach(c=>{
+  ScrollTrigger.create({
+    trigger:'#'+c.id,start:'top 55%',end:'bottom 45%',
+    onEnter:()=>{chapterEl.textContent=c.label;chapterEl.classList.add('show');},
+    onEnterBack:()=>{chapterEl.textContent=c.label;chapterEl.classList.add('show');}
+  });
+});
+
+/* LIMBO — sequential words */
+gsap.utils.toArray('.limbo-lines .word').forEach((el,i)=>{
+  gsap.to(el,{
+    opacity:1, y:0, duration:1.3, ease:'power3.out',
+    scrollTrigger:{trigger:el,start:'top 78%'}
+  });
+});
+/* Strike animation on last word */
+gsap.to('.limbo-lines .word.last .strike::after', {});
+ScrollTrigger.create({
+  trigger:'.limbo-lines .word.last',start:'top 60%',
+  onEnter:()=>{
+    const strike=document.querySelector('.limbo-lines .word.last .strike');
+    strike.style.setProperty('--stop',1);
+    // inject keyframe with GSAP animation on pseudo via CSS variable
+  }
+});
+/* Because ::after can't be animated via GSAP directly, we do class swap */
+const styleEl=document.createElement('style');
+styleEl.textContent='.limbo-lines .word.last.activated .strike::after{transform:scaleX(1);transition:transform 1.4s cubic-bezier(.22,1,.36,1)}';
+document.head.appendChild(styleEl);
+ScrollTrigger.create({
+  trigger:'.limbo-lines .word.last',start:'top 55%',
+  onEnter:()=>document.querySelector('.limbo-lines .word.last').classList.add('activated')
+});
+
+/* Blue flash transition after limbo */
+ScrollTrigger.create({
+  trigger:'#percorso',start:'top 85%',
+  onEnter:()=>{
+    gsap.timeline()
+      .to('#flash',{opacity:.8,duration:.18,ease:'power2.out'})
+      .to('#flash',{opacity:0,duration:.6,ease:'power2.in'})
+      .to('.beam::before',{});
+    const beam=document.querySelector('.beam');
+    beam.style.setProperty('--b','1');
+    const s=document.createElement('style');
+    s.textContent='.beam.on::before,.beam.on::after{opacity:1;animation:beamMove 1.6s cubic-bezier(.22,1,.36,1) forwards}@keyframes beamMove{0%{transform:translateX(-60vw) skewX(-6deg);opacity:0}25%{opacity:1}100%{transform:translateX(60vw) skewX(-6deg);opacity:0}}';
+    document.head.appendChild(s);
+    beam.classList.add('on');
+    setTimeout(()=>beam.classList.remove('on'),1800);
+  }
+});
+
+/* PERCORSO — paragraphs reveal on scroll, no pin */
+gsap.to('.percorso-p',{
+  opacity:1,y:0,duration:1.1,ease,stagger:.22,
+  scrollTrigger:{trigger:'.percorso-inner',start:'top 75%'}
+});
+gsap.from('.percorso-title',{opacity:0,y:26,duration:1,ease,scrollTrigger:{trigger:'.percorso-title',start:'top 82%'}});
+gsap.from('.percorso-eb',{opacity:0,y:18,duration:.8,ease,scrollTrigger:{trigger:'.percorso-eb',start:'top 85%'}});
+gsap.from('.percorso-close',{opacity:0,y:20,duration:.9,ease,scrollTrigger:{trigger:'.percorso-close',start:'top 85%'}});
+/* Subtle parallax on bg image */
+gsap.to('#percorsoImg',{yPercent:-8,scale:1.08,scrollTrigger:{trigger:'#percorso',start:'top bottom',end:'bottom top',scrub:.6}});
+
+/* SKILLS cards staggered */
+gsap.to('.card',{
+  opacity:1,y:0,duration:1,ease,stagger:.12,
+  scrollTrigger:{trigger:'#skills',start:'top 60%'}
+});
+/* Skills title split reveal */
+gsap.from('.skills-title',{opacity:0,y:30,duration:1,ease,scrollTrigger:{trigger:'.skills-title',start:'top 80%'}});
+gsap.from('.skills-lead',{opacity:0,y:24,duration:.95,ease,scrollTrigger:{trigger:'.skills-lead',start:'top 82%'}});
+gsap.from('.skills-eb',{opacity:0,y:20,duration:.8,ease,scrollTrigger:{trigger:'.skills-eb',start:'top 85%'}});
+gsap.from('.skills-foot',{opacity:0,y:20,duration:.9,ease,scrollTrigger:{trigger:'.skills-foot',start:'top 85%'}});
+
+/* TEAM — zoom + reveal */
+gsap.to('#teamImg',{scale:1.15,filter:'brightness(.5) contrast(1.1)',scrollTrigger:{trigger:'#team',start:'top bottom',end:'bottom top',scrub:true}});
+gsap.from('.team-copy',{opacity:0,y:30,duration:1.2,ease,scrollTrigger:{trigger:'#team',start:'top 55%'}});
+
+/* TESTIMONIALS — build + marquee-like scroll driven */
+const TESTI=[
+  {t:"Sarò sempre grato a tutto ciò che hai fatto per me e per tutti noi bro, te lo sei meritato tutto",a:"Membro del team"},
+  {t:"Dom comunque mi sta aiutando tanto questo percorso",a:"Membro del team"},
+  {t:"Ci tengo a dire che adoro il fatto che sei diretto e mi dici le cose come stanno. Mi hai aiutato tantissimo a guardarmi dentro quando c'era bisogno.",a:"Membro del team"},
+  {t:"Parte gli scherzi bro ti devo veramente tanto, gran parte dei risultati e della crescita fatta deriva tanto da te. Te ne sono davvero grato, credimi. Andiamoci a prendere tutto.",a:"Membro del team"},
+  {t:"Penso ti meriti di saperlo perciò te lo dico: c'è un team che pensa che tu matematicamente sei uno di quei pochi che farà la differenza. È un momento duro ma è incredibile vederti in piedi che cerchi di migliorare la situazione nonostante tutto.",a:"Membro del team"},
+  {t:"Dom, come puoi vedere stanno arrivando i risultati — tutto grazie a te che sin dal primo giorno mi hai permesso di inserirmi in questa attività. Sono più di un anno e mezzo che faccio questa attività e sono davvero grato dell'aiuto e del supporto che mi hai dato anche nei momenti peggiori.",a:"Giuseppe"},
+  {t:"Questo mese ho fatto il mio primo consultant. Un grazie speciale a Dominic, il nostro nuovo rubino, che mi è stato super vicino dall'inizio alla fine.",a:"Membro del team"},
+  {t:"Ho sempre pensato di non essere capace di tradare e investire. L'anno scorso mi sono messa a studiare sul serio partendo dal cambiare la mia credenza. Grazie per questo gruppo, sono molto grata di farne parte.",a:"OV. Students"}
+];
+const tTrack=document.getElementById('testiTrack');
+/* Duplicate for seamless marquee loop */
+[...TESTI,...TESTI].forEach(x=>{
+  const d=document.createElement('div');
+  d.className='testi-card';
+  d.innerHTML=`<div class="q">"</div><p class="t">${x.t}</p><div class="a"><span class="bar"></span>${x.a}</div>`;
+  tTrack.appendChild(d);
+});
+/* Testi header reveal (no pin, no scroll lock) */
+gsap.from('.testi-eb,.testi-title,.testi-sub',{opacity:0,y:22,duration:.9,ease,stagger:.08,scrollTrigger:{trigger:'.testi-head',start:'top 75%'}});
+
+/* FINAL title reveal */
+ScrollTrigger.create({
+  trigger:'#final',start:'top 70%',
+  onEnter:()=>{
+    gsap.to('.final-title .l>span',{y:0,opacity:1,duration:1.2,ease:'power3.out',stagger:.18});
+    gsap.to('.final-cta-wrap',{opacity:1,y:0,duration:1,ease,delay:.8});
+  }
+});
+gsap.from('.final-eb',{opacity:0,y:20,duration:.9,ease,scrollTrigger:{trigger:'#final',start:'top 78%'}});
+
+/* YT slip reveal (safe: always visible, animation only first-enter) */
+gsap.set('#yt > *', {opacity:0, y:26});
+gsap.to('#yt > *',{opacity:1, y:0, duration:.9, ease, stagger:.08, scrollTrigger:{trigger:'#yt',start:'top 88%',toggleActions:'play none none none',once:true}});
+
+/* ================== Custom cursor ================== */
+(function(){
+  const supportsHover=window.matchMedia('(hover:hover)').matches && window.innerWidth>900;
+  if(!supportsHover) return;
+  const dot=document.createElement('div'); dot.className='cursor-dot';
+  const ring=document.createElement('div'); ring.className='cursor-ring';
+  document.body.appendChild(dot); document.body.appendChild(ring);
+  let x=window.innerWidth/2, y=window.innerHeight/2;
+  let rx=x, ry=y;
+  window.addEventListener('pointermove',(e)=>{ x=e.clientX; y=e.clientY; dot.style.transform=`translate(${x}px,${y}px) translate(-50%,-50%)`; });
+  function loop(){ rx+=(x-rx)*0.18; ry+=(y-ry)*0.18; ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(loop); } loop();
+  const interactive='a, button, .btn, .card, .testi-card, .btn-yt';
+  document.addEventListener('pointerover',(e)=>{ if(e.target.closest(interactive)) ring.classList.add('grow'); });
+  document.addEventListener('pointerout',(e)=>{ if(e.target.closest(interactive)) ring.classList.remove('grow'); });
+  window.addEventListener('blur',()=>{dot.style.opacity='0';ring.style.opacity='0';});
+  window.addEventListener('focus',()=>{dot.style.opacity='1';ring.style.opacity='1';});
+})();
+
+/* Refresh on load to fix any layout quirks */
+window.addEventListener('load',()=>ScrollTrigger.refresh());
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"7f7b0fd8732c4326aae4b9d58d5c514a","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
