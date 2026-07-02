@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Dominic Rossi — Un percorso, senza filtri</title>
 <meta name="theme-color" content="#000000" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -129,7 +130,12 @@
   .band-content .list .sep{color:var(--paper-4);margin:0 .55em;font-style:italic}
   .band-content .note{margin-top:1.25rem;font-size:1rem;line-height:1.6;color:var(--paper-3);max-width:36em}
 
-  .how-outro{margin-top:4rem;padding-top:2rem;border-top:1px solid var(--rule);font-size:clamp(1.25rem,1.85vw,1.55rem);line-height:1.45;color:var(--paper);font-weight:400;max-width:34em;letter-spacing:-.005em}
+  
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:10px 0 0}
+.skill-box{border:1px solid var(--rule-2);background:#111;padding:16px 18px;border-radius:12px;color:var(--paper);text-align:center;font-weight:500;transition:.25s}
+.skill-box:hover{border-color:#fff;transform:translateY(-2px)}
+
+.how-outro{margin-top:4rem;padding-top:2rem;border-top:1px solid var(--rule);font-size:clamp(1.25rem,1.85vw,1.55rem);line-height:1.45;color:var(--paper);font-weight:400;max-width:34em;letter-spacing:-.005em}
   @media(min-width:820px){.how-outro{margin-left:12rem}}
   .how-outro em{font-style:italic;color:var(--paper-2)}
 
@@ -215,11 +221,6 @@
 </head>
 <body>
 
-<header class="masthead">
-  <div class="brand">Dominic Rossi <em>— un percorso, senza filtri</em></div>
-  <div class="issue">Aprile MMXXVI · Numero I</div>
-</header>
-
 <!-- Chapter side nav removed per design update -->
 
 <!-- ============================= COVER ============================= -->
@@ -228,11 +229,6 @@
     <img src="https://customer-assets.emergentagent.com/job_essence-reveal/artifacts/hba20sun_ChatGPT%20Image%202%20lug%202026%2C%2013_42_19.png" alt="">
   </div>
   <div class="cover-inner">
-    <div class="cover-meta reveal">
-      <span>Aprile 2026</span>
-      <span>Lettura di 8 minuti</span>
-      <span>Di Dominic Rossi</span>
-    </div>
     <h1 class="reveal">
       Lavori tanto. <em>Ti impegni.</em><br>
       Fai tutto quello che dovresti fare.<br>
@@ -248,9 +244,6 @@
       <a class="link-inline" href="#c1">Continua la lettura</a>
     </div>
   </div>
-  <div class="cover-foot reveal">
-    <span class="credit">Fotografia: archivio personale</span>
-    <div class="scroll-hint"><span class="bar"></span><span>Scorri</span></div>
   </div>
 </section>
 
@@ -275,10 +268,7 @@
   <div class="plate-img tall stage">
     <img src="https://customer-assets.emergentagent.com/job_essence-reveal/artifacts/v9suvezr_0FCE3A58-28C3-4010-A9ED-031D15C3AA6B.jpg" alt="Dominic Rossi sul palco">
   </div>
-  <div class="plate-cap">
-    <span>Fig. I — Sul palco durante un evento, 2025</span>
-    <em>Archivio personale</em>
-  </div>
+  
 </div>
 
 <article class="article">
@@ -307,10 +297,7 @@
   <div class="video-frame">
     <iframe src="https://www.youtube.com/embed/AT2u563ZGTU?rel=0" title="La mia storia — Dominic Rossi" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
   </div>
-  <div class="video-cap">
-    <span>Fig. II — La mia storia, in video</span>
-    <em>Guarda su YouTube ↗</em>
-  </div>
+  
 </div>
 
 <hr class="rule">
@@ -339,42 +326,33 @@
   <div class="how-inner">
     <div class="chapter reveal">
       <div class="chapter-num">III.</div>
-      <h2 class="chapter-title">Non è un lavoro. <em>È un sistema per capire fin dove puoi arrivare.</em></h2>
+      <h2 class="chapter-title">Cosa costruisci <em>entrando in questo percorso.</em></h2>
     </div>
 
     <p class="how-lead reveal">
-      Non ha un tetto. Non finisce quando raggiungi un obiettivo, perché il punto non è arrivare da qualche parte — <em>è diventare qualcuno capace di creare opportunità ovunque decida di mettere le mani.</em>
-    </p>
-    <p class="how-note reveal">Più cresci, più il gioco si allarga.</p>
+Questo non è semplicemente un business.
+È un ambiente dove sviluppi competenze che aumentano il tuo valore e ti permettono di costruire qualcosa che dipenda sempre di più da te.
+</p>
 
     <div class="triptych">
       <div class="band reveal">
         <div class="band-label">Impari</div>
         <div class="band-content">
-          <p class="list">vendita <span class="sep">—</span> comunicazione <span class="sep">—</span> leadership <span class="sep">—</span> marketing <span class="sep">—</span> intelligenza artificiale <span class="sep">—</span> gestione del denaro</p>
+          <div class="skills-grid"><div class="skill-box">Vendita</div><div class="skill-box">Comunicazione</div><div class="skill-box">Leadership</div><div class="skill-box">Marketing</div><div class="skill-box">Intelligenza Artificiale</div><div class="skill-box">Gestione del denaro</div></div>
           <p class="note">Competenze che aumentano il tuo valore, dentro e fuori da qualsiasi progetto.</p>
         </div>
       </div>
 
-      <div class="band reveal">
-        <div class="band-label">Le applichi</div>
+      <div class="band reveal"><div class="band-label">Quello che inizi a costruire</div>
         <div class="band-content">
-          <p class="list">creando contenuti <span class="sep">—</span> parlando con le persone <span class="sep">—</span> lavorando insieme a un team <span class="sep">—</span> ricevendo formazione e confronto continuo</p>
-          <p class="note">Perché le competenze crescono solo quando vengono messe in pratica.</p>
-        </div>
-      </div>
-
-      <div class="band reveal">
-        <div class="band-label">Costruisci</div>
-        <div class="band-content">
-          <p class="list">cashflow <span class="sep">—</span> relazioni <span class="sep">—</span> fiducia in te stesso <span class="sep">—</span> un modo di pensare <span class="sep">—</span> la versione di te che finora era solo in testa</p>
+          <div class="skills-grid"><div class="skill-box">Cashflow</div><div class="skill-box">Relazioni</div><div class="skill-box">Fiducia in te stesso</div><div class="skill-box">Mentalità</div><div class="skill-box">Una vita costruita da te</div></div>
         </div>
       </div>
     </div>
 
     <p class="how-outro reveal">
-      Il percorso è il veicolo. <em>Quello che costruisci davvero sei tu</em> — e non c'è un punto in cui smetti.
-    </p>
+Il business è il mezzo.<br><em>Quello che costruisci davvero sei tu.</em>
+</p>
   </div>
 </section>
 
@@ -383,10 +361,7 @@
   <div class="plate-img tall">
     <img src="https://customer-assets.emergentagent.com/job_essence-reveal/artifacts/abadetq9_IMG_1552.JPG" alt="Community — evento">
   </div>
-  <div class="plate-cap">
-    <span>Fig. III — Community durante un evento nazionale</span>
-    <em>Chi c'è dentro il percorso</em>
-  </div>
+  
 </div>
 
 <hr class="rule">
